@@ -15,6 +15,10 @@ app.listen({port: 3000}, async () => {
     // sync will apply all new models configuration to the database
     // distructive process
     // use only for development
-    await sequelize.sync({force: true})
-    console.log('database sync')
+    // await sequelize.sync({force: true})
+    // console.log('database sync')
+
+    // connect to the db
+    await sequelize.authenticate()
+    console.log('db connected')
 })
