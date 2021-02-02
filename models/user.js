@@ -14,13 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return {...this.get(), id: undefined}
+      return {...this.get(), id: undefined, password: undefined}
     }
   };
   User.init({
     uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     username: {
       type: DataTypes.STRING,
@@ -33,10 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.STRING,
       allowNull: false
-    },
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    middlename: DataTypes.STRING,
+    }
   }, {
     sequelize,
     tableName: 'users',
