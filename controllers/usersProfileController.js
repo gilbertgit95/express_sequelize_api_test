@@ -36,7 +36,8 @@ router.get('/', async (req, res) => {
     let skip = (pagenumber - 1) * pagesize
 
     try {
-        const result = await User.findAll({
+        const result = await UserProfile.findAll({
+            include: ['user'],
             where: selector,
             limit: pagesize,
             skip: skip
@@ -69,10 +70,17 @@ router.put('/', async (req, res) => {
         mobile,
         gender,
         birthday,
+
+        userUuid
     } = req.body
 
     try {
-        const result = await User.create({
+        const user = await User.findOne({where: {uuid: userUuid}})
+
+        if (!user) throw({message: 'user doesnt exist'})
+
+        const result = await UserProfile.create({
+            userId: user.id,
             firstname,
             middlename,
             lastname,

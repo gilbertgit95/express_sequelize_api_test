@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({UserProfile}) {
       // define association here
+      this.hasOne(UserProfile, {foreignKey: 'userId', as: 'userProfile'})
     }
 
     toJSON() {
@@ -24,15 +25,42 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Should have a password'
+        },
+        notEmpty: {
+          msg: 'Should have a password'
+        }
+      }
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Should have a username'
+        },
+        notEmpty: {
+          msg: 'Should have a username'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Should have a email'
+        },
+        notEmpty: {
+          msg: 'Should have a email'
+        },
+        isEmail: {
+          msg: 'Must be a valid email'
+        }
+      }
     },
     role: {
       type: DataTypes.STRING,

@@ -14,12 +14,19 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({User}) {
       // define association here
+      this.belongsTo(User, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
+        as: 'user'
+      })
     }
 
     toJSON() {
-      return {...this.get(), id: undefined}
+      return {...this.get(), id: undefined, userId: undefined}
     }
   };
   UserProfile.init({
@@ -41,15 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'usersprofile',
     modelName: 'UserProfile',
   });
-
-  UserProfile.associate = models => {
-    UserProfile.belongsTo(models.User, {
-      foreignKey: {
-        name: 'fkuser',
-        allowNull: false
-      }
-    })
-  }
 
   return UserProfile;
 };

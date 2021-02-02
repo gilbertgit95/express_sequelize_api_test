@@ -1,4 +1,5 @@
 const express = require('express');
+const userprofile = require('../models/userprofile');
 const { sequelize, User } = require('./../models');
 
 const router = express.Router();
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
         username,
         email,
         role,
+        uuid,
 
         pagesize,
         pagenumber
@@ -19,6 +21,7 @@ router.get('/', async (req, res) => {
     // generate selector
     let selector = {}
     if (username) selector['username'] = username
+    if (uuid) selector['uuid'] = uuid
     if (email)    selector['email'] = email
     if (role)     selector['role'] = role
 
@@ -31,6 +34,7 @@ router.get('/', async (req, res) => {
 
     try {
         const result = await User.findAll({
+            include: ['userProfile'],
             where: selector,
             limit: pagesize,
             skip: skip
@@ -44,12 +48,29 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const {
+        password,
         username,
         email,
         role,
     } = req.body
 
-    res.send('modify data')
+    const user = await User.findOne({ selector: {uuid: userUuid} })
+
+    if (user) {
+        user.password = password
+        user.username = username
+        user.email = email
+        user.role = role
+
+        try {
+            const result = await user.save()
+            res.json(result)
+        } catch (e) {
+            return res.status(500).json(e)
+        }
+    } else {
+        return res.status(500).json({message: 'User not existed'})
+    }
 })
 
 router.put('/', async (req, res) => {
@@ -58,7 +79,11 @@ router.put('/', async (req, res) => {
         username,
         email,
         role,
+
+        userUuid
     } = req.body
+    
+    const user = await User.findOne({ selector: {uuid: userUuid} })
 
     try {
         const result = await User.create({
@@ -76,7 +101,20 @@ router.put('/', async (req, res) => {
 })
 
 router.delete('/', async (req, res) => {
-    res.send('delete data')
+    const {userUuid} = req.body
+    
+    const user = await User.findOne({ selector: {uuid: userUuid} })
+
+    if (user) {
+        try {
+            await user.destroy()
+            res.json({message: 'User deleted'})
+        } catch (e) {
+            return res.status(500).json(e)
+        }
+    } else {
+        return res.status(500).json({message: 'User not existed'})
+    }
 })
 
 module.exports = router;

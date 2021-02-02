@@ -52,6 +52,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
@@ -83,17 +87,6 @@ module.exports = {
         allowNull: false,
         type: DataTypes.DATE
       }
-    })
-    await queryInterface.addColumn('usersprofile', 'fkuser',{
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-      defaultValue: null,
-      after: 'can_maintain_system'
     })
   },
   down: async (queryInterface, Sequelize) => {
