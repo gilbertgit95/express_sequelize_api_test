@@ -2,11 +2,11 @@ const bcryptjs = require('bcryptjs')
 const ITERATION = 8
 
 module.exports = {
-    async hash(password) {
+    async generate(password) {
         return await bcryptjs.hash(password, ITERATION)
     },
 
-    async compare(password, hashPassword) {
+    async verify(password, hashPassword) {
         return await bcryptjs.compare(password, hashPassword)
     }
 }

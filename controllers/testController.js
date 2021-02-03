@@ -18,8 +18,8 @@ router.get('/', async (req, res) => {
         pagenumber
     } = req.query
 
-    const hashed = await encryption.hash('betwo')
-    const isEqual = await encryption.compare('betwo', hashed)
+    const hashed = await encryption.generate('betwo')
+    const isEqual = await encryption.verify('betwo', hashed)
     res.json({message: `hash is: ${ hashed }, and is isEqual value is: ${ isEqual }`})
 })
 

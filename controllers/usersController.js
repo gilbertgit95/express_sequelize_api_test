@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     // generate selector
     let selector = {}
     if (username) selector['username'] = username
-    if (uuid) selector['uuid'] = uuid
+    if (uuid)     selector['uuid'] = uuid
     if (email)    selector['email'] = email
     if (role)     selector['role'] = role
 
