@@ -1,6 +1,7 @@
 const express = require('express');
+const textService = require('../services/testService');
 const encryption = require('../services/encryption');
-const ecryption = require('../services/encryption')
+const jwt = require('../services/token');
 
 const router = express.Router();
 
@@ -20,7 +21,21 @@ router.get('/', async (req, res) => {
 
     const hashed = await encryption.generate('betwo')
     const isEqual = await encryption.verify('betwo', hashed)
-    res.json({message: `hash is: ${ hashed }, and is isEqual value is: ${ isEqual }`})
+
+    const jwt1 = jwt.generate({user: 'johan'})
+    await textService.delay(2)
+    const jwt2 = jwt.generate({user: 'johan'})
+    try {
+        const jwtdata = await jwt.verify(jwt1)
+
+        return res.json({
+            encryption: `hash is: ${ hashed }, and is isEqual value is: ${ isEqual }`,
+            jwt: `jwt1: ${ jwt1 } and jwt2: ${ jwt2 } isEqual: ${ jwt1 == jwt2 }`,
+            jwtdata
+        })
+    } catch (err) {
+        return res.status(500).json(err)
+    }
 })
 
 router.post('/', async (req, res) => {
