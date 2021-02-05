@@ -19,8 +19,8 @@ router.get('/', async (req, res) => {
         pagenumber
     } = req.query
 
-    const hashed = await encryption.generate('betwo')
-    const isEqual = await encryption.verify('betwo', hashed)
+    const hashed = await encryption.generate('J432x!#fr5')
+    const isEqual = await encryption.verify('J432x!#fr5', hashed)
 
     const jwt1 = jwt.generate({user: 'johan'})
     await textService.delay(2)

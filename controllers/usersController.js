@@ -86,7 +86,7 @@ router.put('/', async (req, res) => {
     const user = await User.findOne({ selector: {uuid: userUuid} })
 
     try {
-        const result = await User.create({
+        const result = await ser.create({
             password,
             username,
             email,
