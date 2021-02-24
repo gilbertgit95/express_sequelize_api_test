@@ -3,6 +3,11 @@ const { sequelize } = require('./models');
 
 const controllers = require('./controllers');
 
+/**
+ * The root express application
+ * @const
+ * @global
+ */
 const app = express()
 
 app.use(express.json())

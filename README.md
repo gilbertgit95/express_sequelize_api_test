@@ -1,6 +1,6 @@
 no body, creating a test files and some basic test codes
 
-# Resource Planner Webapp
+# Test Application
 
 > Created By: Gilbert Cuerbo
 > Created On: 2021
